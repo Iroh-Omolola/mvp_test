@@ -1,0 +1,14 @@
+.panel-header{
+    width: 100%;
+
+}
+.panel-content{
+    display: flex;
+    justify-content: space-between;
+}
+.panel-content h4{  
+    color: #011F4B;
+    font-weight: 700;
+    font-size: 17px;
+    margin-top: 15px;
+}

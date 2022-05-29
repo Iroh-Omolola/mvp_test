@@ -1,0 +1,119 @@
+.mini-header-container{
+    display: flex;
+    padding-left: 4px;
+    padding-right: 4.8%;
+    padding-top: 50px;
+    justify-content: space-between;
+    background-color: #fff;
+}
+.mini-header-buttons{
+    display: flex;
+}
+
+.mini-header-content h3{ 
+ color: #011F4B;
+ font-size: 28px;
+}
+.mini-header-content p{
+ font-size: 17px;
+ color:#7E8299;
+ margin-top: -7px;
+font-weight: 700;
+
+}
+.ant-picker{
+    background-color: #1BC5BD;
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 8px;
+    height: 43px;
+    padding-bottom: 8px;
+    color: #fff;
+    width: 150px;
+    
+}
+.ant-btn{
+    height: 43px;
+    width: 150px;
+    color: #fff;
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #005B96;
+}
+.ant-picker-suffix {
+      content: url('../../public/assets/images/calendar.svg');
+      background-repeat: no-repeat;
+      background-size: auto;
+    }
+
+.ant-picker-input>input::placeholder {
+    color: #fff;
+}.ant-picker-today-btn{
+    color: #1BC5BD;
+
+}
+.ant-picker-focused, .ant-picker:hover, .ant-picker-cell-inner::before{
+    border-color: #1BC5BD !important;
+}
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+    background: #1BC5BD;
+}
+.ant-picker-input>input {
+    background-color: #1BC5BD;
+    color: #fff;
+
+}
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    width: 150px;
+    background-color: #1BC5BD !important;
+    height: 43px;
+    padding: 0 11px;
+    border-radius: 5px;
+    border-color: #1BC5BD !important;
+}
+.ant-select-suffix {
+      content: url('../../public/assets/images/select.svg');
+      background-repeat: no-repeat;
+      background-size: auto;
+}
+.one-btn{
+    margin-left: 10px;
+}
+.ant-select-selection-placeholder, .ant-select-selection-item {
+      color: #fff;
+      margin-top: 5px;
+}
+.ant-select-item,.ant-select-dropdown {
+background-color: #1BC5BD !important;
+color: #FFFFFF!important;
+box-shadow: none;
+}
+
+@media screen and (max-width: 1069px) {
+  .mini-header-container {
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 921px) {
+  .mini-header-buttons {
+    flex-direction: column;
+  }
+  .ant-btn{
+
+    width: 250px;
+    margin-bottom: 10px;
+}
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    margin-bottom: 10px;
+    width: 250px;
+}
+.ant-picker{
+     margin-bottom: 10px;
+    width: 250px;
+}
+}
+/* 
+mini-header-container
+*/

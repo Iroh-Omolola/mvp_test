@@ -1,0 +1,17 @@
+.footer-container{
+    background-color: white;
+    /* position: fixed; */
+    /* min-height: 70%; */
+}
+.footer-link{
+    display: flex;
+  margin-left: 20px;
+}
+.footer-link p{
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #005B96;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+}

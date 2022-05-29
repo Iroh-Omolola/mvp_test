@@ -1,0 +1,95 @@
+.main-report-header{
+    height: 700px;
+    position: sticky;
+    overflow-y: scroll;
+    z-index: 1;
+
+}
+.ant-collapse-borderless, .main-report-container {
+    background-color: #F1FAFE;
+}
+.ant-collapse-item{
+    width:100%;
+    min-height: 71px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.ant-collapse{
+   margin-top: 20px;
+   color: #011F4B;
+    background: #F1FAFE !important;
+    border-radius: 10px;
+    padding-left: 30px;
+    padding-bottom: 30px;
+    padding-right: 30px;
+    padding-top: 0px;
+
+
+}
+.ant-collapse-header{
+    font-weight: 700;
+    font-size: 16px;
+    height: 71px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    color:#011F4B
+}
+.ant-table-thead>tr>th{
+    border: none;
+    background: #fff;
+    color:#011F4B;
+    font-weight: 400;
+  
+}
+.ant-table{
+    margin-top: 10px;
+    overflow-x: scroll;
+
+}
+.ant-table-thead>tr{
+   height: 35px;
+   width: 100%;
+
+
+}
+.ant-collapse-content{
+    background: #F1FAFE !important;
+
+}
+tr.ant-table-row.ant-table-row-level-0 {
+   background: #F1FAFE;
+}
+.ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan]):before{
+    background: none;
+}
+.ant-collapse>.ant-collapse-item, .ant-collapse-borderless>.ant-collapse-item {
+ border-bottom: none;
+}
+.total-amount{
+    padding: 20px;
+    width: 100%;
+    height: 55px;
+    background: #F1FAFE;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.total-amount h3{
+    font-weight: 700;
+    font-size: 18px;
+    color: #011F4B;
+}
+.mini-report-head{
+background: #F1FAFE;
+
+}
+.mini-report-head h6{
+ padding-top: 20px;
+ padding-bottom: 20px;
+ padding-left: 30px;
+}
+.report-one-table{
+    padding-left: 30px;
+    padding-right: 30px;
+}
