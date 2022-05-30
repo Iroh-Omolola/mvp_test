@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { Collapse, Table } from "antd";
 import "../../../css/report.css";
@@ -11,7 +11,7 @@ import {
   fetchProjects,
   fetchGateways,
 } from "../../../redux/actions";
-import connect from "react-redux/es/connect/connect";
+import { connect } from "react-redux";
 import ReportOne from "./reportOne";
 import ReportGraphContainer from "./graphShow";
 import NoContent from "./noContent";
@@ -74,6 +74,27 @@ const Report = ({
   }, []);
 
   // ====================================================
+  
+// To get the individual amount and total amount
+  const calculateAmountFromReports = function (reports) {
+    return reports&& reports.length>0&& reports?.reduce(function (acc, obj) {
+      return +obj.amount + +acc;
+    }, 0);
+  };
+
+  
+  const computeTotalSum = function (collections) {
+    if (!(collections instanceof Object)) return;
+
+    if (collections instanceof Array) {
+      return collections.reduce(function (acc, obj) {
+        return +acc + calculateAmountFromReports(obj.reports);
+      }, 0);
+    }
+    return calculateAmountFromReports(collections.reports);
+  };
+
+  // ====================================================
 
   // PROJECT(S) WITH GATEWAY--Showing GatewayName
 
@@ -129,20 +150,22 @@ const Report = ({
   //  specific project and all gateways
   const getSpecificProjectAndAllGateways = function (projectId) {
     return (
-      projectReports.length > 0 &&
-      projectReports.find((p) => p.projectId === projectId)
+      projectReports?.length > 0 &&
+      projectReports?.find((p) => p.projectId === projectId)
     );
   };
 
   const getspecificandAll = getSpecificProjectAndAllGateways(
-    payloadData.projectId
+    payloadData?.projectId
   );
 
   const getOneProjectandAllGateways =
     gateway_data &&
     gateway_data.length > 0 &&
     gateway_data.map((project) => {
-      const reports = getspecificandAll?.reports && getspecificandAll?.reports.length>0&&
+      const reports =
+        getspecificandAll?.reports &&
+        getspecificandAll?.reports.length > 0 &&
         getspecificandAll?.reports?.filter(
           (d) => project.gatewayId === d.gatewayId
         );
@@ -164,8 +187,8 @@ const Report = ({
     return selectedProject;
   };
   const myOne = getSpecificProjectAndSpecificGateway(
-    payloadData.projectId,
-    payloadData.gatewayId
+    payloadData?.projectId,
+    payloadData?.gatewayId
   );
   console.log("myone", myOne);
 
@@ -176,23 +199,25 @@ const Report = ({
       allTheProject.find((gateway) => gateway.gatewayId === gatewayId)
     );
   };
-  const result = getSpecificGatewayAndAllProjects(payloadData.gatewayId);
+  const result = getSpecificGatewayAndAllProjects(payloadData?.gatewayId);
 
   const getOneGatewayandAllProject =
     projects_data &&
     projects_data.length > 0 &&
     projects_data.map((project) => {
-      const reports = result?.reports?.filter(
-        (d) => project.projectId === d.projectId
-      );
+      const reports =
+        result?.reports &&
+        result?.reports.length > 0 &&
+        result?.reports?.filter((d) => project.projectId === d.projectId);
       return { ...project, reports };
     });
 
   // Table data
 
   const dataSource =
-    myOne &&
-    myOne.reports?.map((data, index) => {
+    myOne?.reports &&
+    myOne?.reports.length > 0 &&
+    myOne?.reports?.map((data, index) => {
       reportOneTotal = reportOneTotal + data?.amount;
 
       return {
@@ -252,13 +277,8 @@ const Report = ({
                                       <PanelHeader
                                         project={data.name}
                                         total={`TOTAL: ${(() => {
-                                          data.reports &&
-                                            data.reports?.map(
-                                              ({ amount }) =>
-                                                (totalAmount =
-                                                  totalAmount + Number(amount))
-                                            );
-                                          return Math.round(totalAmount);
+                                          const total = computeTotalSum(data);
+                                          return Math.round(total);
                                         })().toLocaleString()}
                               USD`}
                                       />
@@ -298,7 +318,7 @@ const Report = ({
                       </div>
                       <div className="total-amount">
                         <h3>{`TOTAL: ${Math.round(
-                          totalSum
+                          computeTotalSum(projectReports)
                         ).toLocaleString()} USD`}</h3>
                       </div>
                     </>
@@ -327,7 +347,7 @@ const Report = ({
                         gatewayName={gatewayName}
                         dataSource={dataSource}
                         totalAmount={`TOTAL: ${Math.round(
-                          reportOneTotal
+                          computeTotalSum(myOne)
                         ).toLocaleString()} USD`}
                       />
                     )}
@@ -353,6 +373,7 @@ const Report = ({
                       gatewayName={gatewayName}
                       projectNumber={result?.name}
                       totalNumber={""}
+                      computeTotalSum={computeTotalSum}
                       totalAmount={""}
                       projectReports={getOneGatewayandAllProject}
                     />
@@ -379,7 +400,7 @@ const Report = ({
                       gatewayName={gatewayName}
                       dataSource={allGatewayOne}
                       // projectNumber={getspecificandAll.name}
-                      totalNumber={""}
+                      computeTotalSum={computeTotalSum}
                       totalAmount={""}
                       projectReports={getOneProjectandAllGateways}
                     />

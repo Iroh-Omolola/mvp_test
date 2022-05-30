@@ -13,6 +13,7 @@ const ReportGraphContainer = ({
   projectNumber,
   totalNumber,
   projectReports,
+  computeTotalSum,
 }) => {
   const [revealCount, setRevealCount] = useState(0);
   let totalAmount = 0;
@@ -27,9 +28,25 @@ const ReportGraphContainer = ({
         }
       });
     }, 1);
-
     return () => clearInterval(timer);
   }, []);
+
+  const data = [];
+  projectReports &&
+    projectReports.length > 0 &&
+    projectReports?.map((obj) => {
+      var randomColor = "#000000".replace(/0/g, function () {
+        return (~~(Math.random() * 16)).toString(16);
+      });
+
+      let insert = {
+        color: randomColor,
+        title: obj.name,
+        value: computeTotalSum(obj),
+      };
+
+      data.push(insert);
+    });
   const { Panel } = Collapse;
 
   const columns = [
@@ -50,16 +67,6 @@ const ReportGraphContainer = ({
     },
   ];
 
-  const data = {
-    //   labels: ["Project 1", "Project 2"],
-    datasets: [
-      {
-        data: [300, 200],
-        backgroundColor: ["#FF6384", "#36A2EB"],
-        hoverBackgroundColor: ["#FF6384", "#36A2EB"],
-      },
-    ],
-  };
   return (
     <>
       <div className="graph-show-main-container">
@@ -88,13 +95,8 @@ const ReportGraphContainer = ({
                             <PanelHeader
                               project={data.name}
                               total={`TOTAL: ${(() => {
-                                data.reports &&
-                                  data.reports?.map(
-                                    ({ amount }) =>
-                                      (totalAmount =
-                                        totalAmount + Number(amount))
-                                  );
-                                return Math.round(totalAmount);
+                                const total = computeTotalSum(data);
+                                return Math.round(total);
                               })().toLocaleString()}
                               USD`}
                             />
@@ -118,9 +120,6 @@ const ReportGraphContainer = ({
                             pagination={false}
                           />
                         </Panel>
-                        {(() => {
-                          totalSum = totalSum + totalAmount;
-                        })()}
                       </>
                     ))}
                 </Collapse>
@@ -131,13 +130,25 @@ const ReportGraphContainer = ({
         <div className="graph-mini-page-container">
           <div className={`graph-details`}>
             <div className="box-container">
-              <span className="box"></span>
-              <p>{projectNumber}</p>
+              {data.map((a, i) => (
+                <>
+              <span style={{backgroundColor:a.color}} key={i} className="box"></span>
+              <p>{a.title}</p>
+                
+                </>
+              )
+                )}
             </div>
           </div>
           <div className="chart-graph">
             <PieChart
-              data={[{ title: "One", value: totalAmount, color: "#E38627" }]}
+              data={data}
+              style={{
+                data: {
+                  fill: ["#E38627", "#000"],
+                },
+                height: "300px",
+              }}
               reveal={revealCount}
               label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
               lineWidth={50}
@@ -148,12 +159,15 @@ const ReportGraphContainer = ({
                 opacity: 0.75,
                 pointerEvents: "none",
               }}
-              style={{ height: "300px" }}
               labelPosition={70}
             />
           </div>
           <div className="graph-details total-footer">
-            <h3>{`${Math.round(totalSum).toLocaleString()} USD`}</h3>
+            <h3>
+              {`TOTAL: ${Math.round(
+                computeTotalSum(projectReports)
+              ).toLocaleString()} USD`}
+            </h3>
           </div>
         </div>
       </div>
