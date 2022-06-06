@@ -57,7 +57,6 @@ const Report = ({
       key: "amount",
     },
   ];
-  console.log("minipay", miniPayload);
 
   useEffect(() => {
     postReport(payloadData);
@@ -73,8 +72,10 @@ const Report = ({
     fetchGateways();
   }, []);
 
-  // ====================================================
-  
+  const sortData = (data) => {
+    // Call slice to create a new Array and prevent mutating it if it's stored in state
+    return data.slice().sort((a, b) => a.myKey - b.myKey);
+  };
 // To get the individual amount and total amount
   const calculateAmountFromReports = function (reports) {
     return reports&& reports.length>0&& reports?.reduce(function (acc, obj) {
@@ -94,7 +95,18 @@ const Report = ({
     return calculateAmountFromReports(collections.reports);
   };
 
-  // ====================================================
+  // ============SORT==DATE======================================
+
+const sortReportsByDate = function (reports) {
+  return reports&&reports.length>0&&reports.sort((a, b) => {
+    if (a.created < b.created) return -1;
+    if (a.created > b.created) return 1;
+    return 0;
+  });
+};
+
+
+
 
   // PROJECT(S) WITH GATEWAY--Showing GatewayName
 
@@ -117,6 +129,7 @@ const Report = ({
                 );
               return { ...report, gatewayName };
             });
+            sortReportsByDate(reports);
         return { ...project, reports };
       })
     );
@@ -141,6 +154,8 @@ const Report = ({
               );
               return { ...report, projectName };
             });
+            sortReportsByDate(reports);
+
         return { ...gateway, reports };
       })
     );
@@ -169,6 +184,8 @@ const Report = ({
         getspecificandAll?.reports?.filter(
           (d) => project.gatewayId === d.gatewayId
         );
+            sortReportsByDate(reports);
+
       return { ...project, reports };
     });
 
@@ -176,6 +193,7 @@ const Report = ({
   const getSpecificProjectAndSpecificGateway = function (projectId, getwayId) {
     const selectedProject = getSpecificProjectAndAllGateways(projectId);
     if (selectedProject) {
+            sortReportsByDate(selectedProject.reports);
       selectedProject.reports =
         selectedProject?.reports &&
         selectedProject?.reports.length > 0 &&
@@ -190,7 +208,6 @@ const Report = ({
     payloadData?.projectId,
     payloadData?.gatewayId
   );
-  console.log("myone", myOne);
 
   const getSpecificGatewayAndAllProjects = function (gatewayId) {
     return (
@@ -222,7 +239,7 @@ const Report = ({
 
       return {
         key: index + 1,
-        date: moment(data?.created).format("L"),
+        date: moment(data?.created).format("DD.MM.YYYY"),
         transactionId: data?.paymentId,
         amount: `${data?.amount.toLocaleString()} USD`,
       };
@@ -233,7 +250,7 @@ const Report = ({
 
     return {
       key: index + 1,
-      date: moment(data?.created).format("L"),
+      date: moment(data?.created).format("DD.MM.YYYY"),
       transactionId: data?.paymentId,
       amount: `${data?.amount} USD`,
     };
@@ -296,7 +313,7 @@ const Report = ({
                                             key: index + 1,
                                             date: moment(
                                               reportData?.created
-                                            ).format("L"),
+                                            ).format("DD.MM.YYYY"),
                                             transactionId:
                                               reportData?.paymentId,
                                             gateway: reportData?.gatewayName,
@@ -308,9 +325,6 @@ const Report = ({
                                       pagination={false}
                                     />
                                   </Panel>
-                                  {(() => {
-                                    totalSum = totalSum + totalAmount;
-                                  })()}
                                 </>
                               ))}
                           </Collapse>
@@ -345,7 +359,7 @@ const Report = ({
                       <ReportOne
                         projectName={projectName}
                         gatewayName={gatewayName}
-                        dataSource={dataSource}
+                        dataSource={sortData(dataSource)}
                         totalAmount={`TOTAL: ${Math.round(
                           computeTotalSum(myOne)
                         ).toLocaleString()} USD`}
@@ -372,9 +386,7 @@ const Report = ({
                       projectName={projectName}
                       gatewayName={gatewayName}
                       projectNumber={result?.name}
-                      totalNumber={""}
                       computeTotalSum={computeTotalSum}
-                      totalAmount={""}
                       projectReports={getOneGatewayandAllProject}
                     />
                   )}
@@ -399,9 +411,7 @@ const Report = ({
                       projectName={projectName}
                       gatewayName={gatewayName}
                       dataSource={allGatewayOne}
-                      // projectNumber={getspecificandAll.name}
                       computeTotalSum={computeTotalSum}
-                      totalAmount={""}
                       projectReports={getOneProjectandAllGateways}
                     />
                   )}

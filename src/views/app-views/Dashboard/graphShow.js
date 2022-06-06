@@ -111,7 +111,7 @@ const ReportGraphContainer = ({
                               data.reports.length > 0 &&
                               data.reports?.map((reportData, index) => ({
                                 key: index + 1,
-                                date: moment(reportData?.created).format("L"),
+                                date: moment(reportData?.created).format("DD.MM.YYYY"),
                                 transactionId: reportData?.paymentId,
                                 amount: `${reportData?.amount.toLocaleString()} USD`,
                               }))
