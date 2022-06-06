@@ -72,10 +72,7 @@ const Report = ({
     fetchGateways();
   }, []);
 
-  const sortData = (data) => {
-    // Call slice to create a new Array and prevent mutating it if it's stored in state
-    return data.slice().sort((a, b) => a.myKey - b.myKey);
-  };
+ 
 // To get the individual amount and total amount
   const calculateAmountFromReports = function (reports) {
     return reports&& reports.length>0&& reports?.reduce(function (acc, obj) {
@@ -359,7 +356,7 @@ const sortReportsByDate = function (reports) {
                       <ReportOne
                         projectName={projectName}
                         gatewayName={gatewayName}
-                        dataSource={sortData(dataSource)}
+                        dataSource={dataSource}
                         totalAmount={`TOTAL: ${Math.round(
                           computeTotalSum(myOne)
                         ).toLocaleString()} USD`}
