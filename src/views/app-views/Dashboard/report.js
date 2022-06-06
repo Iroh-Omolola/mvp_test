@@ -72,15 +72,17 @@ const Report = ({
     fetchGateways();
   }, []);
 
- 
-// To get the individual amount and total amount
+  // To get the individual amount and total amount
   const calculateAmountFromReports = function (reports) {
-    return reports&& reports.length>0&& reports?.reduce(function (acc, obj) {
-      return +obj.amount + +acc;
-    }, 0);
+    return (
+      reports &&
+      reports.length > 0 &&
+      reports?.reduce(function (acc, obj) {
+        return +obj.amount + +acc;
+      }, 0)
+    );
   };
 
-  
   const computeTotalSum = function (collections) {
     if (!(collections instanceof Object)) return;
 
@@ -93,18 +95,20 @@ const Report = ({
   };
 
   // ============SORT==DATE======================================
+  const sortReportsByDate = function (reports) {
+    return (
+      reports &&
+      reports.length > 0 &&
+      reports.sort((a, b) => {
+        if (a.created < b.created) return -1;
+        if (a.created > b.created) return 1;
+        return 0;
+      })
+    );
+  };
+  // ==================================================
 
-const sortReportsByDate = function (reports) {
-  return reports&&reports.length>0&&reports.sort((a, b) => {
-    if (a.created < b.created) return -1;
-    if (a.created > b.created) return 1;
-    return 0;
-  });
-};
-
-
-
-
+  
   // PROJECT(S) WITH GATEWAY--Showing GatewayName
 
   const getAllProjectsAndAllGateways = function () {
@@ -126,7 +130,7 @@ const sortReportsByDate = function (reports) {
                 );
               return { ...report, gatewayName };
             });
-            sortReportsByDate(reports);
+        sortReportsByDate(reports);
         return { ...project, reports };
       })
     );
@@ -151,7 +155,7 @@ const sortReportsByDate = function (reports) {
               );
               return { ...report, projectName };
             });
-            sortReportsByDate(reports);
+        sortReportsByDate(reports);
 
         return { ...gateway, reports };
       })
@@ -181,7 +185,7 @@ const sortReportsByDate = function (reports) {
         getspecificandAll?.reports?.filter(
           (d) => project.gatewayId === d.gatewayId
         );
-            sortReportsByDate(reports);
+      sortReportsByDate(reports);
 
       return { ...project, reports };
     });
@@ -190,7 +194,7 @@ const sortReportsByDate = function (reports) {
   const getSpecificProjectAndSpecificGateway = function (projectId, getwayId) {
     const selectedProject = getSpecificProjectAndAllGateways(projectId);
     if (selectedProject) {
-            sortReportsByDate(selectedProject.reports);
+      sortReportsByDate(selectedProject.reports);
       selectedProject.reports =
         selectedProject?.reports &&
         selectedProject?.reports.length > 0 &&
